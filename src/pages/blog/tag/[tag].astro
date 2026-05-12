@@ -1,0 +1,60 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import readingTime from 'reading-time';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts
+        .filter((p) => p.data.tags.includes(tag))
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+
+const formatDate = (d: Date) =>
+  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+---
+
+<Base
+  title={`#${tag}`}
+  description={`All posts tagged #${tag}`}
+>
+  <div class="max-w-3xl mx-auto px-6 py-16">
+    <a href="/blog" class="font-sans text-sm mb-8 inline-block" style="color: var(--color-muted);">
+      &larr; All posts
+    </a>
+    <h1 class="font-sans text-3xl font-bold mb-2" style="color: var(--color-text);">#{tag}</h1>
+    <p class="text-base mb-10" style="color: var(--color-muted);">{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
+
+    <div class="space-y-10">
+      {posts.map((post) => {
+        const { text: readTime } = readingTime(post.body ?? '');
+        return (
+          <article class="border-b pb-10" style="border-color: var(--color-border);">
+            <h2 class="font-sans text-xl font-semibold mb-2">
+              <a href={`/blog/${post.id}`} class="no-underline hover:underline" style="color: var(--color-text);">
+                {post.data.title}
+              </a>
+            </h2>
+            <p class="text-sm leading-relaxed mb-3" style="color: var(--color-muted);">
+              {post.data.description}
+            </p>
+            <div class="flex items-center gap-3 font-sans text-xs" style="color: var(--color-muted);">
+              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+              <span>&middot;</span>
+              <span>{readTime}</span>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</Base>

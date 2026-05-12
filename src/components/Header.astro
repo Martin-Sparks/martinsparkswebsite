@@ -1,0 +1,77 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/runs', label: 'Run Routes' },
+  { href: '/about', label: 'About' },
+];
+
+const { pathname } = Astro.url;
+---
+
+<header class="border-b" style="border-color: var(--color-border); background-color: var(--color-bg);">
+  <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="/" class="font-sans font-bold text-lg tracking-tight no-underline" style="color: var(--color-text);">
+      Martin Sparks
+    </a>
+
+    <nav class="flex items-center gap-6">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={[
+            'font-sans text-sm no-underline transition-opacity',
+            pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
+              ? 'opacity-100 font-semibold'
+              : 'opacity-60 hover:opacity-100',
+          ]}
+          style="color: var(--color-text);"
+        >
+          {link.label}
+        </a>
+      ))}
+
+      <button
+        id="theme-toggle"
+        aria-label="Toggle dark mode"
+        class="w-8 h-8 flex items-center justify-center rounded-md opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+        style="color: var(--color-text);"
+      >
+        <span id="theme-icon-light" class="hidden">
+          <!-- Sun -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </span>
+        <span id="theme-icon-dark">
+          <!-- Moon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('theme-toggle');
+  const iconLight = document.getElementById('theme-icon-light');
+  const iconDark = document.getElementById('theme-icon-dark');
+
+  function applyTheme(dark: boolean) {
+    root.classList.toggle('dark', dark);
+    iconLight?.classList.toggle('hidden', !dark);
+    iconDark?.classList.toggle('hidden', dark);
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+
+  const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(stored ? stored === 'dark' : prefersDark);
+
+  toggle?.addEventListener('click', () => {
+    applyTheme(!root.classList.contains('dark'));
+  });
+</script>

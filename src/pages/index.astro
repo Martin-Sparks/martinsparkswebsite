@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const formatDate = (d: Date) =>
+  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).format(d);
+---
+
+<Base
+  title="Martin Sparks"
+  description="Software engineer, runner, builder of side projects. Based in the UK."
+>
+  <!-- Hero -->
+  <section class="max-w-3xl mx-auto px-6 py-20 sm:py-28">
+    <p class="font-sans text-sm font-medium mb-4" style="color: var(--color-accent);">
+      Hello, I'm Martin
+    </p>
+    <h1 class="font-sans text-4xl sm:text-5xl font-bold leading-tight mb-6" style="color: var(--color-text);">
+      Software engineer.<br />
+      Long-distance runner.<br />
+      Builder of things.
+    </h1>
+    <p class="text-lg leading-relaxed max-w-xl mb-10" style="color: var(--color-muted);">
+      I write code professionally and for fun, run more miles than is strictly sensible,
+      and occasionally ship side projects. This is where I write about it.
+    </p>
+    <div class="flex flex-wrap gap-4">
+      <a
+        href="/blog"
+        class="font-sans text-sm font-medium px-5 py-2.5 rounded-md no-underline transition-opacity hover:opacity-80"
+        style="background-color: var(--color-accent); color: #fff;"
+      >
+        Read the blog
+      </a>
+      <a
+        href="/about"
+        class="font-sans text-sm font-medium px-5 py-2.5 rounded-md no-underline transition-opacity hover:opacity-80"
+        style="border: 1px solid var(--color-border); color: var(--color-text);"
+      >
+        About me
+      </a>
+    </div>
+  </section>
+
+  <!-- Recent posts -->
+  <section class="max-w-3xl mx-auto px-6 pb-20">
+    <div class="flex items-baseline justify-between mb-8">
+      <h2 class="font-sans text-xl font-bold" style="color: var(--color-text);">Recent posts</h2>
+      <a href="/blog" class="font-sans text-sm" style="color: var(--color-muted);">All posts &rarr;</a>
+    </div>
+
+    <div class="space-y-8">
+      {posts.map((post) => (
+        <article class="border-b pb-8" style="border-color: var(--color-border);">
+          <div class="flex flex-wrap gap-2 mb-2">
+            {post.data.tags.map((tag) => (
+              <span class="font-sans text-xs" style="color: var(--color-muted);">#{tag}</span>
+            ))}
+          </div>
+          <h3 class="font-sans text-lg font-semibold mb-1">
+            <a href={`/blog/${post.id}`} class="no-underline hover:underline" style="color: var(--color-text);">
+              {post.data.title}
+            </a>
+          </h3>
+          <p class="text-sm leading-relaxed mb-3" style="color: var(--color-muted);">
+            {post.data.description}
+          </p>
+          <time class="font-sans text-xs" style="color: var(--color-muted);">
+            {formatDate(post.data.date)}
+          </time>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Quick links -->
+  <section class="max-w-3xl mx-auto px-6 pb-24">
+    <h2 class="font-sans text-xl font-bold mb-6" style="color: var(--color-text);">Explore</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {[
+        { href: '/blog', label: 'Blog', desc: 'Writing on software, running, and building things.' },
+        { href: '/runs', label: 'Run Routes', desc: 'Strava activities and favourite local routes.' },
+        { href: '/about', label: 'About', desc: 'A bit more about who I am and what I do.' },
+      ].map(({ href, label, desc }) => (
+        <a
+          href={href}
+          class="block p-5 rounded-lg no-underline transition-opacity hover:opacity-80"
+          style="border: 1px solid var(--color-border);"
+        >
+          <p class="font-sans font-semibold mb-1" style="color: var(--color-text);">{label}</p>
+          <p class="font-sans text-sm" style="color: var(--color-muted);">{desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>

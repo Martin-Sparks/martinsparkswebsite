@@ -1,0 +1,80 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import readingTime from 'reading-time';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const formatDate = (d: Date) =>
+  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+
+// Collect all unique tags
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<Base
+  title="Blog"
+  description="Writing on software engineering, running, and building things in public."
+>
+  <div class="max-w-3xl mx-auto px-6 py-16">
+    <h1 class="font-sans text-3xl font-bold mb-2" style="color: var(--color-text);">Blog</h1>
+    <p class="text-base mb-10" style="color: var(--color-muted);">
+      Writing on software, running, and building things. {posts.length} posts.
+    </p>
+
+    <!-- Tags -->
+    {allTags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-12">
+        {allTags.map((tag) => (
+          <a
+            href={`/blog/tag/${tag}`}
+            class="font-sans text-xs px-3 py-1 rounded-full no-underline hover:underline"
+            style="border: 1px solid var(--color-border); color: var(--color-muted);"
+          >
+            #{tag}
+          </a>
+        ))}
+      </div>
+    )}
+
+    <!-- Post list -->
+    <div class="space-y-10">
+      {posts.map((post) => {
+        const { text: readTime } = readingTime(post.body ?? '');
+        return (
+          <article class="border-b pb-10" style="border-color: var(--color-border);">
+            <div class="flex flex-wrap gap-2 mb-2">
+              {post.data.tags.map((tag) => (
+                <a
+                  href={`/blog/tag/${tag}`}
+                  class="font-sans text-xs no-underline hover:underline"
+                  style="color: var(--color-muted);"
+                >
+                  #{tag}
+                </a>
+              ))}
+            </div>
+            <h2 class="font-sans text-xl font-semibold mb-2">
+              <a
+                href={`/blog/${post.id}`}
+                class="no-underline hover:underline"
+                style="color: var(--color-text);"
+              >
+                {post.data.title}
+              </a>
+            </h2>
+            <p class="text-sm leading-relaxed mb-3" style="color: var(--color-muted);">
+              {post.data.description}
+            </p>
+            <div class="flex items-center gap-3 font-sans text-xs" style="color: var(--color-muted);">
+              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+              <span>&middot;</span>
+              <span>{readTime}</span>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</Base>

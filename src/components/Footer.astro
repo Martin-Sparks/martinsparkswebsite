@@ -1,0 +1,38 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-auto border-t py-8" style="border-color: var(--color-border);">
+  <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <p class="font-sans text-sm" style="color: var(--color-muted);">
+      &copy; {year} Martin Sparks. All rights reserved.
+    </p>
+    <div class="flex items-center gap-4">
+      <a
+        href="/rss.xml"
+        class="font-sans text-sm no-underline hover:underline"
+        style="color: var(--color-muted);"
+      >
+        RSS
+      </a>
+      <a
+        href="https://github.com/martinsparks"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-sans text-sm no-underline hover:underline"
+        style="color: var(--color-muted);"
+      >
+        GitHub
+      </a>
+      <a
+        href="https://www.strava.com/athletes/martinsparks"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-sans text-sm no-underline hover:underline"
+        style="color: var(--color-muted);"
+      >
+        Strava
+      </a>
+    </div>
+  </div>
+</footer>
