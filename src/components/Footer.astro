@@ -1,38 +1,75 @@
 ---
 const year = new Date().getFullYear();
+
+const links = [
+  { href: '/blog', label: 'Blog' },
+  { href: '/runs', label: 'Run Routes' },
+  { href: '/about', label: 'About' },
+  { href: '/rss.xml', label: 'RSS' },
+];
+
+const social = [
+  { href: 'https://linkedin.com/in/martin-sparks', label: 'LinkedIn' },
+  { href: 'https://github.com/Martin-Sparks', label: 'GitHub' },
+  { href: 'https://www.strava.com/athletes/martinsparks', label: 'Strava' },
+];
 ---
 
-<footer class="mt-auto border-t py-8" style="border-color: var(--color-border);">
-  <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-    <p class="font-sans text-sm" style="color: var(--color-muted);">
-      &copy; {year} Martin Sparks. All rights reserved.
-    </p>
-    <div class="flex items-center gap-4">
-      <a
-        href="/rss.xml"
-        class="font-sans text-sm no-underline hover:underline"
-        style="color: var(--color-muted);"
-      >
-        RSS
-      </a>
-      <a
-        href="https://github.com/martinsparks"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-sans text-sm no-underline hover:underline"
-        style="color: var(--color-muted);"
-      >
-        GitHub
-      </a>
-      <a
-        href="https://www.strava.com/athletes/martinsparks"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-sans text-sm no-underline hover:underline"
-        style="color: var(--color-muted);"
-      >
-        Strava
-      </a>
+<footer style="background-color: var(--color-bg-dark); color: var(--color-text-on-dark);">
+  <div class="max-w-5xl mx-auto px-6 py-16">
+    <div class="flex flex-col sm:flex-row justify-between gap-12 mb-16">
+
+      <!-- Brand -->
+      <div class="max-w-xs">
+        <p class="text-lg font-bold mb-3" style="color: var(--color-text-on-dark);">Martin Sparks</p>
+        <p class="text-sm leading-relaxed" style="color: var(--color-muted-on-dark);">
+          Engineering manager, long-distance runner, and builder of things. Based in Scotland.
+        </p>
+      </div>
+
+      <!-- Nav columns -->
+      <div class="flex gap-16">
+        <div>
+          <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">Pages</p>
+          <ul class="space-y-2">
+            {links.map(l => (
+              <li>
+                <a
+                  href={l.href}
+                  class="text-sm no-underline hover:underline"
+                  style="color: var(--color-muted-on-dark);"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">Find me</p>
+          <ul class="space-y-2">
+            {social.map(l => (
+              <li>
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm no-underline hover:underline"
+                  style="color: var(--color-muted-on-dark);"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-8" style="border-top: 1px solid var(--color-border-dark);">
+      <p class="text-xs" style="color: var(--color-muted-on-dark);">
+        &copy; {year} Martin Sparks. All rights reserved.
+      </p>
     </div>
   </div>
 </footer>

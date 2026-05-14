@@ -23,34 +23,51 @@ const formatDate = (d: Date) =>
   new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
 ---
 
-<Base
-  title={`#${tag}`}
-  description={`All posts tagged #${tag}`}
->
-  <div class="max-w-3xl mx-auto px-6 py-16">
-    <a href="/blog" class="font-sans text-sm mb-8 inline-block" style="color: var(--color-muted);">
-      &larr; All posts
-    </a>
-    <h1 class="font-sans text-3xl font-bold mb-2" style="color: var(--color-text);">#{tag}</h1>
-    <p class="text-base mb-10" style="color: var(--color-muted);">{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
+<Base title={`#${tag}`} description={`All posts tagged ${tag}`}>
 
-    <div class="space-y-10">
+  <section style="background-color: var(--color-bg-dark);">
+    <div class="max-w-5xl mx-auto px-6 py-20">
+      <a href="/blog" class="eyebrow mb-6 inline-block no-underline hover:underline" style="color: var(--color-muted-on-dark);">
+        &larr; All posts
+      </a>
+      <h1 class="text-4xl font-extrabold mb-2" style="color: var(--color-text-on-dark);">{tag}</h1>
+      <p class="text-base" style="color: var(--color-muted-on-dark);">
+        {posts.length} post{posts.length !== 1 ? 's' : ''}
+      </p>
+    </div>
+  </section>
+
+  <div class="max-w-5xl mx-auto px-6 py-14">
+    <div class="space-y-5">
       {posts.map((post) => {
         const { text: readTime } = readingTime(post.body ?? '');
         return (
-          <article class="border-b pb-10" style="border-color: var(--color-border);">
-            <h2 class="font-sans text-xl font-semibold mb-2">
-              <a href={`/blog/${post.id}`} class="no-underline hover:underline" style="color: var(--color-text);">
-                {post.data.title}
-              </a>
-            </h2>
-            <p class="text-sm leading-relaxed mb-3" style="color: var(--color-muted);">
-              {post.data.description}
-            </p>
-            <div class="flex items-center gap-3 font-sans text-xs" style="color: var(--color-muted);">
-              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-              <span>&middot;</span>
-              <span>{readTime}</span>
+          <article
+            class="group rounded-2xl p-6 transition-all hover:shadow-md"
+            style="background-color: var(--color-bg-subtle); border: 1px solid var(--color-border);"
+          >
+            <div class="sm:flex sm:items-start sm:justify-between gap-6">
+              <div class="flex-1 min-w-0">
+                <h2 class="text-xl font-bold leading-snug mb-2">
+                  <a
+                    href={`/blog/${post.id}`}
+                    class="no-underline post-title"
+                    style="color: var(--color-text);"
+                  >
+                    {post.data.title}
+                  </a>
+                </h2>
+                <p class="text-sm leading-relaxed" style="color: var(--color-muted);">
+                  {post.data.description}
+                </p>
+              </div>
+              <div class="flex sm:flex-col items-center sm:items-end gap-3 mt-4 sm:mt-0 shrink-0">
+                <time class="text-xs font-medium whitespace-nowrap" style="color: var(--color-muted);">
+                  {formatDate(post.data.date)}
+                </time>
+                <span class="text-xs" style="color: var(--color-border);">·</span>
+                <span class="text-xs font-medium whitespace-nowrap" style="color: var(--color-muted);">{readTime}</span>
+              </div>
             </div>
           </article>
         );

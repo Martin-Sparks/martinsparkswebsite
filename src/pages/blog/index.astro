@@ -9,7 +9,6 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 const formatDate = (d: Date) =>
   new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
 
-// Collect all unique tags
 const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 ---
 
@@ -17,60 +16,64 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
   title="Blog"
   description="Writing on software engineering, running, and building things in public."
 >
-  <div class="max-w-3xl mx-auto px-6 py-16">
-    <h1 class="font-sans text-3xl font-bold mb-2" style="color: var(--color-text);">Blog</h1>
-    <p class="text-base mb-10" style="color: var(--color-muted);">
-      Writing on software, running, and building things. {posts.length} posts.
-    </p>
+  <!-- Header -->
+  <section style="background-color: var(--color-bg-dark);">
+    <div class="max-w-5xl mx-auto px-6 py-20">
+      <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">Writing</p>
+      <h1 class="text-4xl sm:text-5xl font-extrabold mb-4" style="color: var(--color-text-on-dark);">Blog</h1>
+      <p class="text-base max-w-lg" style="color: var(--color-muted-on-dark);">
+        On software engineering, running, and building things. {posts.length} posts so far.
+      </p>
+    </div>
+  </section>
+
+  <div class="max-w-5xl mx-auto px-6 py-14">
 
     <!-- Tags -->
     {allTags.length > 0 && (
       <div class="flex flex-wrap gap-2 mb-12">
         {allTags.map((tag) => (
-          <a
-            href={`/blog/tag/${tag}`}
-            class="font-sans text-xs px-3 py-1 rounded-full no-underline hover:underline"
-            style="border: 1px solid var(--color-border); color: var(--color-muted);"
-          >
-            #{tag}
-          </a>
+          <a href={`/blog/tag/${tag}`} class="tag-chip">{tag}</a>
         ))}
       </div>
     )}
 
     <!-- Post list -->
-    <div class="space-y-10">
+    <div class="space-y-5">
       {posts.map((post) => {
         const { text: readTime } = readingTime(post.body ?? '');
         return (
-          <article class="border-b pb-10" style="border-color: var(--color-border);">
-            <div class="flex flex-wrap gap-2 mb-2">
-              {post.data.tags.map((tag) => (
-                <a
-                  href={`/blog/tag/${tag}`}
-                  class="font-sans text-xs no-underline hover:underline"
-                  style="color: var(--color-muted);"
-                >
-                  #{tag}
-                </a>
-              ))}
-            </div>
-            <h2 class="font-sans text-xl font-semibold mb-2">
-              <a
-                href={`/blog/${post.id}`}
-                class="no-underline hover:underline"
-                style="color: var(--color-text);"
-              >
-                {post.data.title}
-              </a>
-            </h2>
-            <p class="text-sm leading-relaxed mb-3" style="color: var(--color-muted);">
-              {post.data.description}
-            </p>
-            <div class="flex items-center gap-3 font-sans text-xs" style="color: var(--color-muted);">
-              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-              <span>&middot;</span>
-              <span>{readTime}</span>
+          <article
+            class="group rounded-2xl p-6 transition-all hover:shadow-md"
+            style="background-color: var(--color-bg-subtle); border: 1px solid var(--color-border);"
+          >
+            <div class="sm:flex sm:items-start sm:justify-between gap-6">
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap gap-1.5 mb-3">
+                  {post.data.tags.map((tag) => (
+                    <a href={`/blog/tag/${tag}`} class="tag-chip">{tag}</a>
+                  ))}
+                </div>
+                <h2 class="text-xl font-bold leading-snug mb-2">
+                  <a
+                    href={`/blog/${post.id}`}
+                    class="no-underline post-title"
+                    style="color: var(--color-text);"
+                  >
+                    {post.data.title}
+                  </a>
+                </h2>
+                <p class="text-sm leading-relaxed" style="color: var(--color-muted);">
+                  {post.data.description}
+                </p>
+              </div>
+              <div class="flex sm:flex-col items-center sm:items-end gap-3 mt-4 sm:mt-0 shrink-0">
+                <time class="text-xs font-medium whitespace-nowrap" style="color: var(--color-muted);">
+                  {formatDate(post.data.date)}
+                </time>
+                <span class="text-xs" style="color: var(--color-border);">·</span>
+                <span class="text-xs font-medium whitespace-nowrap" style="color: var(--color-muted);">{readTime}</span>
+              </div>
             </div>
           </article>
         );

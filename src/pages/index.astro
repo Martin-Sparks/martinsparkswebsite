@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import readingTime from 'reading-time';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -12,89 +13,144 @@ const formatDate = (d: Date) =>
 
 <Base
   title="Martin Sparks"
-  description="Engineering manager, full-stack developer, and long-distance runner based in Scotland."
+  description="Engineering manager, long-distance runner, and builder of things. Based in Scotland."
 >
+
   <!-- Hero -->
-  <section class="max-w-3xl mx-auto px-6 py-20 sm:py-28">
-    <p class="font-sans text-sm font-medium mb-4" style="color: var(--color-accent);">
-      Hello, I'm Martin
-    </p>
-    <h1 class="font-sans text-4xl sm:text-5xl font-bold leading-tight mb-6" style="color: var(--color-text);">
-      Engineering manager.<br />
-      Long-distance runner.<br />
-      Builder of things.
+  <section class="max-w-5xl mx-auto px-6 py-24 sm:py-32">
+    <p class="eyebrow mb-5">Engineering Manager · Runner · Builder</p>
+    <h1 class="text-5xl sm:text-6xl font-extrabold leading-tight tracking-tight mb-8 max-w-3xl" style="color: var(--color-text);">
+      Building teams,<br />running roads,<br />shipping things.
     </h1>
     <p class="text-lg leading-relaxed max-w-xl mb-10" style="color: var(--color-muted);">
-      I lead engineering teams for a living, write code for fun, and run more miles
-      than is strictly sensible. This is where I write about all of it.
+      I lead engineering teams at Insights, run long distances around Scotland, and build
+      side projects that get too ambitious for their own good. This is where I write about all of it.
     </p>
-    <div class="flex flex-wrap gap-4">
-      <a
-        href="/blog"
-        class="font-sans text-sm font-medium px-5 py-2.5 rounded-md no-underline transition-opacity hover:opacity-80"
-        style="background-color: var(--color-accent); color: #fff;"
-      >
-        Read the blog
-      </a>
-      <a
-        href="/about"
-        class="font-sans text-sm font-medium px-5 py-2.5 rounded-md no-underline transition-opacity hover:opacity-80"
-        style="border: 1px solid var(--color-border); color: var(--color-text);"
-      >
-        About me
-      </a>
+    <div class="flex flex-wrap gap-3">
+      <a href="/blog" class="btn-primary">Read the blog</a>
+      <a href="/about" class="btn-secondary">About me</a>
+    </div>
+  </section>
+
+  <!-- Stats strip — dark section -->
+  <section style="background-color: var(--color-bg-dark);">
+    <div class="max-w-5xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
+        {[
+          { value: '10+', label: 'Years in software' },
+          { value: '10', label: 'Engineers led' },
+          { value: '4', label: 'Marathons completed' },
+          { value: '20+', label: 'Years playing guitar' },
+        ].map(({ value, label }) => (
+          <div>
+            <p class="text-4xl font-extrabold mb-1" style="color: var(--color-text-on-dark);">{value}</p>
+            <p class="text-sm" style="color: var(--color-muted-on-dark);">{label}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
   <!-- Recent posts -->
-  <section class="max-w-3xl mx-auto px-6 pb-20">
-    <div class="flex items-baseline justify-between mb-8">
-      <h2 class="font-sans text-xl font-bold" style="color: var(--color-text);">Recent posts</h2>
-      <a href="/blog" class="font-sans text-sm" style="color: var(--color-muted);">All posts &rarr;</a>
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <div class="flex items-end justify-between mb-10">
+      <div>
+        <p class="eyebrow mb-2">From the blog</p>
+        <h2 class="text-3xl font-bold" style="color: var(--color-text);">Recent writing</h2>
+      </div>
+      <a href="/blog" class="text-sm font-semibold no-underline hover:underline hidden sm:block" style="color: var(--color-accent);">
+        All posts &rarr;
+      </a>
     </div>
 
-    <div class="space-y-8">
-      {posts.map((post) => (
-        <article class="border-b pb-8" style="border-color: var(--color-border);">
-          <div class="flex flex-wrap gap-2 mb-2">
-            {post.data.tags.map((tag) => (
-              <span class="font-sans text-xs" style="color: var(--color-muted);">#{tag}</span>
-            ))}
-          </div>
-          <h3 class="font-sans text-lg font-semibold mb-1">
-            <a href={`/blog/${post.id}`} class="no-underline hover:underline" style="color: var(--color-text);">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      {posts.map((post) => {
+        const { text: readTime } = readingTime(post.body ?? '');
+        return (
+          <a
+            href={`/blog/${post.id}`}
+            class="group block rounded-2xl p-6 no-underline transition-all hover:shadow-md"
+            style="background-color: var(--color-bg-subtle); border: 1px solid var(--color-border);"
+          >
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              {post.data.tags.map((tag) => (
+                <span class="tag-chip">{tag}</span>
+              ))}
+            </div>
+            <h3 class="text-base font-bold leading-snug mb-3 post-title" style="color: var(--color-text);">
               {post.data.title}
-            </a>
-          </h3>
-          <p class="text-sm leading-relaxed mb-3" style="color: var(--color-muted);">
-            {post.data.description}
-          </p>
-          <time class="font-sans text-xs" style="color: var(--color-muted);">
-            {formatDate(post.data.date)}
-          </time>
-        </article>
-      ))}
+            </h3>
+            <p class="text-sm leading-relaxed mb-4 line-clamp-3" style="color: var(--color-muted);">
+              {post.data.description}
+            </p>
+            <div class="flex items-center gap-2 text-xs" style="color: var(--color-muted);">
+              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+              <span>&middot;</span>
+              <span>{readTime}</span>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <div class="mt-6 sm:hidden text-center">
+      <a href="/blog" class="btn-secondary text-sm">All posts &rarr;</a>
     </div>
   </section>
 
-  <!-- Quick links -->
-  <section class="max-w-3xl mx-auto px-6 pb-24">
-    <h2 class="font-sans text-xl font-bold mb-6" style="color: var(--color-text);">Explore</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <!-- About teaser — dark section -->
+  <section style="background-color: var(--color-bg-dark);">
+    <div class="max-w-5xl mx-auto px-6 py-20">
+      <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">About me</p>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6 max-w-xl leading-tight" style="color: var(--color-text-on-dark);">
+        A decade in software, still enjoying the craft.
+      </h2>
+      <p class="text-base leading-relaxed max-w-2xl mb-8" style="color: var(--color-muted-on-dark);">
+        I started as a developer, moved into engineering leadership, and now run a team of ten at Insights.
+        The path here wasn't linear — it went through a Scottish Government telephony rollout and a 16-week
+        bootcamp — and I think that's made me a better manager.
+      </p>
+      <a href="/about" class="btn-primary-on-dark">Read more about me</a>
+    </div>
+  </section>
+
+  <!-- Explore -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <p class="eyebrow mb-2">Explore</p>
+    <h2 class="text-3xl font-bold mb-10" style="color: var(--color-text);">What's here</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
       {[
-        { href: '/blog', label: 'Blog', desc: 'Writing on software, running, and building things.' },
-        { href: '/runs', label: 'Run Routes', desc: 'Strava activities and favourite local routes.' },
-        { href: '/about', label: 'About', desc: 'A bit more about who I am and what I do.' },
-      ].map(({ href, label, desc }) => (
+        {
+          href: '/blog',
+          label: 'Blog',
+          desc: 'Writing on engineering, leadership, running, and building things in public.',
+          icon: '✍️',
+        },
+        {
+          href: '/runs',
+          label: 'Run Routes',
+          desc: 'Live Strava activity feed with route maps, pace, and heart rate.',
+          icon: '🏃',
+        },
+        {
+          href: '/about',
+          label: 'About',
+          desc: "Background, experience, and what I'm working on outside of the day job.",
+          icon: '👋',
+        },
+      ].map(({ href, label, desc, icon }) => (
         <a
           href={href}
-          class="block p-5 rounded-lg no-underline transition-opacity hover:opacity-80"
-          style="border: 1px solid var(--color-border);"
+          class="group block rounded-2xl p-6 no-underline transition-all hover:shadow-md"
+          style="border: 1.5px solid var(--color-border);"
         >
-          <p class="font-sans font-semibold mb-1" style="color: var(--color-text);">{label}</p>
-          <p class="font-sans text-sm" style="color: var(--color-muted);">{desc}</p>
+          <span class="text-2xl mb-4 block">{icon}</span>
+          <p class="font-bold mb-2 post-title" style="color: var(--color-text);">{label}</p>
+          <p class="text-sm leading-relaxed" style="color: var(--color-muted);">{desc}</p>
         </a>
       ))}
     </div>
   </section>
+
 </Base>

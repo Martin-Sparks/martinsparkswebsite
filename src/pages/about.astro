@@ -6,84 +6,118 @@ import Base from '../layouts/Base.astro';
   title="About"
   description="Martin Sparks is a software engineering manager based in Scotland, with a background in full-stack engineering and a habit of running long distances."
 >
-  <div class="max-w-3xl mx-auto px-6 py-16">
-    <h1 class="font-sans text-3xl font-bold mb-10" style="color: var(--color-text);">About me</h1>
 
-    <div class="prose max-w-none" style="color: var(--color-text);">
-      <p>
-        Hi — I'm Martin. I'm a software engineering manager based in Scotland, currently at
-        <a href="https://www.insights.com" target="_blank" rel="noopener noreferrer">Insights</a>,
-        where I lead a multi-disciplinary team of engineers, QA, and design. My background is in
-        full-stack engineering — I spent several years writing React and TypeScript in the trenches
-        before moving into a leadership role — and I try to keep enough technical depth to be useful
-        to the people I work with.
-      </p>
-
-      <p>
-        The path here wasn't entirely linear. I came to software through
-        <a href="https://codeclan.com" target="_blank" rel="noopener noreferrer">CodeClan</a>,
-        an intensive 16-week bootcamp in Edinburgh, after a stint in technical delivery management
-        for the Scottish Government. Before writing code professionally I was implementing a
-        £1 million telephony platform into Registers of Scotland — managing suppliers, stakeholders,
-        and the particular chaos of making technology work inside a public body. It turns out that
-        experience translates well to engineering leadership: the job is still mostly about
-        communication, priorities, and keeping things moving.
-      </p>
-
-      <p>
-        At Insights I lead a team of ten engineers and own the technical roadmap. In the past year
-        that's meant a large-scale migration off a legacy platform, establishing a community of
-        practice, and building the kind of agile culture where people actually want to show up to
-        retrospectives. The engineering side — React, TypeScript, Java — I still find genuinely
-        interesting, even when I'm spending most of my time in Jira rather than a code editor.
-      </p>
-
-      <h2>Outside of work</h2>
-
-      <p>
-        I run regularly and have done for years — it's the most reliable way I've found to stay
-        fit and clear my head in equal measure. Early mornings, long distances, often in the dark.
-        There's a post about that somewhere on this blog.
-      </p>
-
-      <p>
-        I've played guitar for over 20 years. Not professionally, not particularly ambitiously —
-        just for the pleasure of it. It's one of those things that never gets old no matter how
-        long you've been doing it.
-      </p>
-
-      <p>
-        When there's snow, I snowboard. When there isn't, I look at weather forecasts and wait.
-      </p>
-
-      <p>
-        On the side project front, I'm currently building a jigsaw puzzle game — Phaser 3,
-        TypeScript, targeting iOS and Android via Capacitor. It's more technically interesting
-        than it sounds, and I'll be writing about it here as it takes shape.
-      </p>
-
-      <h2>This site</h2>
-
-      <p>
-        A place to think out loud. I write about engineering — decisions I've made, tools I'm using,
-        things that went wrong in instructive ways. I write about running. And I write about building
-        things in public, which means being honest about the dead ends as well as the progress.
-      </p>
-
-      <p>
-        There's an <a href="/rss.xml">RSS feed</a> if you'd like to follow along.
-      </p>
-
-      <h2>Get in touch</h2>
-
-      <p>
-        Email is best:
-        <a href="mailto:martin.sparks82@gmail.com">martin.sparks82@gmail.com</a>.
-        I'm also on
-        <a href="https://linkedin.com/in/martin-sparks" target="_blank" rel="noopener noreferrer">LinkedIn</a>,
-        <a href="https://github.com/Martin-Sparks" target="_blank" rel="noopener noreferrer">GitHub</a>,
-        and <a href="https://www.strava.com/athletes/martinsparks" target="_blank" rel="noopener noreferrer">Strava</a>.
+  <!-- Header — dark -->
+  <section style="background-color: var(--color-bg-dark);">
+    <div class="max-w-5xl mx-auto px-6 py-20">
+      <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">About me</p>
+      <h1 class="text-4xl sm:text-5xl font-extrabold mb-6 max-w-2xl leading-tight" style="color: var(--color-text-on-dark);">
+        Engineering manager.<br />Runner. Guitarist.
+      </h1>
+      <p class="text-base leading-relaxed max-w-xl" style="color: var(--color-muted-on-dark);">
+        Based in Scotland. Working in software for over a decade.
       </p>
     </div>
-  </div>
+  </section>
+
+  <!-- Bio -->
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    <div class="max-w-2xl">
+      <p class="eyebrow mb-3">Background</p>
+      <div class="prose">
+        <p>
+          Hi — I'm Martin. I'm a software engineering manager at
+          <a href="https://www.insights.com" target="_blank" rel="noopener noreferrer">Insights</a>,
+          where I lead a multi-disciplinary team of engineers, QA, and design. My background is in
+          full-stack engineering — React, TypeScript, Node.js, PostgreSQL — and I try to keep
+          enough technical depth to be genuinely useful to the people I work with.
+        </p>
+        <p>
+          The path here wasn't entirely linear. I came to software through
+          <a href="https://codeclan.com" target="_blank" rel="noopener noreferrer">CodeClan</a>,
+          an intensive 16-week bootcamp in Edinburgh, after a stint in technical delivery management
+          for the Scottish Government — specifically delivering a £1 million telephony platform into
+          Registers of Scotland. Managing suppliers, stakeholders, and the particular chaos of making
+          technology work inside a public body turned out to be good preparation for engineering leadership.
+        </p>
+        <p>
+          At Insights I lead a team of ten and own the technical roadmap. The past year has meant a
+          large-scale migration off a legacy platform, establishing a community of practice, and building
+          the kind of agile culture where people actually want to show up to retrospectives.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Outside work — subtle bg -->
+  <section style="background-color: var(--color-bg-subtle);">
+    <div class="max-w-5xl mx-auto px-6 py-16">
+      <p class="eyebrow mb-8">Outside of work</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {[
+          {
+            title: 'Running',
+            body: 'I run regularly and have done for years — long distances, early mornings, often in the dark. It\'s the best way I\'ve found to stay fit and clear my head in equal measure.',
+          },
+          {
+            title: 'Guitar',
+            body: 'I\'ve played guitar for over 20 years. Not professionally, not particularly ambitiously — just for the pleasure of it. One of those things that never gets old.',
+          },
+          {
+            title: 'Snowboarding',
+            body: 'When there\'s snow, I snowboard. When there isn\'t, I look at weather forecasts and wait.',
+          },
+        ].map(({ title, body }) => (
+          <div
+            class="rounded-2xl p-6"
+            style="background-color: var(--color-bg); border: 1px solid var(--color-border);"
+          >
+            <p class="font-bold text-base mb-3" style="color: var(--color-text);">{title}</p>
+            <p class="text-sm leading-relaxed" style="color: var(--color-muted);">{body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Side project -->
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    <div class="max-w-2xl">
+      <p class="eyebrow mb-3">Current side project</p>
+      <div class="prose">
+        <p>
+          I'm building a jigsaw puzzle game — Phaser 3, TypeScript, targeting iOS and Android via
+          Capacitor. It's a more interesting technical problem than it sounds: smooth drag physics,
+          magnetic snap, piece grouping, and getting 60fps on a five-year-old phone. I'll be writing
+          about it here as it takes shape.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Get in touch — dark -->
+  <section style="background-color: var(--color-bg-dark);">
+    <div class="max-w-5xl mx-auto px-6 py-16">
+      <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">Get in touch</p>
+      <h2 class="text-3xl font-bold mb-6 max-w-md leading-tight" style="color: var(--color-text-on-dark);">
+        Always happy to talk.
+      </h2>
+      <p class="text-base mb-8 max-w-lg" style="color: var(--color-muted-on-dark);">
+        Email is the best way to reach me. I'm also on LinkedIn and Strava if those are more your speed.
+        There's an RSS feed for the blog too.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="mailto:martin.sparks82@gmail.com" class="btn-primary-on-dark">
+          Send me an email
+        </a>
+        <a href="https://linkedin.com/in/martin-sparks" target="_blank" rel="noopener noreferrer" class="btn-ghost-on-dark">
+          LinkedIn
+        </a>
+        <a href="https://www.strava.com/athletes/martinsparks" target="_blank" rel="noopener noreferrer" class="btn-ghost-on-dark">
+          Strava
+        </a>
+      </div>
+    </div>
+  </section>
+
 </Base>
