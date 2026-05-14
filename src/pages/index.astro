@@ -17,18 +17,48 @@ const formatDate = (d: Date) =>
 >
 
   <!-- Hero -->
-  <section class="max-w-5xl mx-auto px-6 py-24 sm:py-32">
-    <p class="eyebrow mb-5">Engineering Manager · Runner · Builder</p>
-    <h1 class="text-5xl sm:text-6xl font-extrabold leading-tight tracking-tight mb-8 max-w-3xl" style="color: var(--color-text);">
-      Building teams,<br />running roads,<br />shipping things.
-    </h1>
-    <p class="text-lg leading-relaxed max-w-xl mb-10" style="color: var(--color-muted);">
-      I lead engineering teams at Insights, run long distances around Scotland, and build
-      side projects that get too ambitious for their own good. This is where I write about all of it.
-    </p>
-    <div class="flex flex-wrap gap-3">
-      <a href="/blog" class="btn-primary">Read the blog</a>
-      <a href="/about" class="btn-secondary">About me</a>
+  <section
+    style="
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: flex-end;
+      background-image: url('/images/hero.jpg');
+      background-size: cover;
+      background-position: center 40%;
+      overflow: hidden;
+    "
+  >
+    <!-- Gradient overlay: transparent at top, dark at bottom where text sits -->
+    <div style="
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 14, 10, 0.15) 0%,
+        rgba(15, 14, 10, 0.35) 40%,
+        rgba(15, 14, 10, 0.82) 75%,
+        rgba(15, 14, 10, 0.96) 100%
+      );
+    " />
+
+    <!-- Content -->
+    <div class="relative max-w-5xl mx-auto px-6 pb-20 pt-40 w-full">
+      <p class="eyebrow mb-5" style="color: rgba(238,232,213,0.7);">Engineering Manager · Runner · Builder</p>
+      <h1
+        class="text-5xl sm:text-6xl font-extrabold leading-tight tracking-tight mb-6 max-w-3xl"
+        style="color: var(--color-text-on-dark);"
+      >
+        Building teams,<br />running roads,<br />shipping things.
+      </h1>
+      <p class="text-lg leading-relaxed max-w-xl mb-10" style="color: var(--color-muted-on-dark);">
+        I lead engineering teams at Insights, run long distances around Scotland, and build
+        side projects that get too ambitious for their own good. This is where I write about all of it.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="/blog" class="btn-primary-on-dark">Read the blog</a>
+        <a href="/about" class="btn-ghost-on-dark">About me</a>
+      </div>
     </div>
   </section>
 
