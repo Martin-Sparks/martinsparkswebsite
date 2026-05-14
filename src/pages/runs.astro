@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 
-// Refresh access token then fetch latest activities at build time
 async function fetchActivities() {
   const tokenRes = await fetch('https://www.strava.com/oauth/token', {
     method: 'POST',
@@ -24,55 +23,97 @@ async function fetchActivities() {
 interface StravaActivity {
   id: number;
   name: string;
-  distance: number;         // metres
-  moving_time: number;      // seconds
-  total_elevation_gain: number; // metres
+  distance: number;
+  moving_time: number;
+  total_elevation_gain: number;
   start_date_local: string;
   type: string;
+  sport_type: string;
   map: { summary_polyline: string };
+  average_heartrate?: number;
+  max_heartrate?: number;
+  average_cadence?: number;
+  average_speed: number;
 }
 
-function formatDistance(m: number) {
-  return `${(m / 1000).toFixed(1)} km`;
+// Decode a Google encoded polyline into [lat, lng] pairs at build time
+function decodePolyline(encoded: string): [number, number][] {
+  const coords: [number, number][] = [];
+  let index = 0, lat = 0, lng = 0;
+  while (index < encoded.length) {
+    let b: number, shift = 0, result = 0;
+    do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+    lat += (result & 1) ? ~(result >> 1) : result >> 1;
+    shift = result = 0;
+    do { b = encoded.charCodeAt(index++) - 63; result |= (b & 0x1f) << shift; shift += 5; } while (b >= 0x20);
+    lng += (result & 1) ? ~(result >> 1) : result >> 1;
+    coords.push([lat / 1e5, lng / 1e5]);
+  }
+  return coords;
 }
 
+function formatDistance(m: number) { return `${(m / 1000).toFixed(1)} km`; }
 function formatTime(s: number) {
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
   return h > 0 ? `${h}h ${m.toString().padStart(2, '0')}m` : `${m}m ${(s % 60).toString().padStart(2, '0')}s`;
 }
-
+function formatPace(mps: number) {
+  const secPerKm = 1000 / mps;
+  const m = Math.floor(secPerKm / 60), s = Math.round(secPerKm % 60);
+  return `${m}:${s.toString().padStart(2, '0')} /km`;
+}
 function formatDate(iso: string) {
-  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-    .format(new Date(iso));
+  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(iso));
 }
 
 const activities = await fetchActivities();
-const runs = activities.filter((a) => ['Run', 'TrailRun', 'VirtualRun'].includes(a.type));
+const runs = activities
+  .filter((a) => ['Run', 'TrailRun', 'VirtualRun'].includes(a.type))
+  .map((a) => ({
+    ...a,
+    coords: a.map.summary_polyline ? decodePolyline(a.map.summary_polyline) : [],
+  }));
 ---
 
 <Base
   title="Run Routes"
-  description="Recent runs pulled live from Strava."
+  description="Recent runs pulled live from Strava, with route maps."
 >
+  <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
   <div class="max-w-3xl mx-auto px-6 py-16">
     <h1 class="font-sans text-3xl font-bold mb-2" style="color: var(--color-text);">Run Routes</h1>
     <p class="text-base mb-12" style="color: var(--color-muted);">
-      Latest runs from Strava. Updated on every site build.
+      Latest runs from Strava, with live route maps. Updated on every site build.
     </p>
 
     {runs.length === 0 && (
       <p class="font-sans text-sm" style="color: var(--color-muted);">No recent runs found.</p>
     )}
 
-    <div class="space-y-6">
+    <div class="space-y-8">
       {runs.map((activity) => (
-        <article
-          class="rounded-xl overflow-hidden"
-          style="border: 1px solid var(--color-border);"
-        >
+        <article class="rounded-xl overflow-hidden" style="border: 1px solid var(--color-border);">
+
+          <!-- Map -->
+          {activity.coords.length > 0 ? (
+            <div
+              class="activity-map"
+              data-coords={JSON.stringify(activity.coords)}
+              style="height: 280px; background-color: var(--color-border);"
+            />
+          ) : (
+            <div
+              class="flex items-center justify-center font-sans text-sm"
+              style="height: 120px; background-color: var(--color-border); color: var(--color-muted);"
+            >
+              No route data
+            </div>
+          )}
+
+          <!-- Activity details -->
           <div class="p-6">
-            <div class="flex items-start justify-between gap-4 mb-4">
+            <div class="flex items-start justify-between gap-4 mb-5">
               <div>
                 <h2 class="font-sans text-lg font-semibold mb-1" style="color: var(--color-text);">
                   {activity.name}
@@ -92,11 +133,16 @@ const runs = activities.filter((a) => ['Run', 'TrailRun', 'VirtualRun'].includes
               </a>
             </div>
 
-            <div class="grid grid-cols-3 gap-4">
+            <!-- Stats grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-4">
               {[
                 { label: 'Distance', value: formatDistance(activity.distance) },
                 { label: 'Time', value: formatTime(activity.moving_time) },
+                { label: 'Pace', value: formatPace(activity.average_speed) },
                 { label: 'Elevation', value: `${Math.round(activity.total_elevation_gain)}m` },
+                ...(activity.average_heartrate ? [{ label: 'Avg HR', value: `${Math.round(activity.average_heartrate)} bpm` }] : []),
+                ...(activity.max_heartrate ? [{ label: 'Max HR', value: `${Math.round(activity.max_heartrate)} bpm` }] : []),
+                ...(activity.average_cadence ? [{ label: 'Cadence', value: `${Math.round(activity.average_cadence * 2)} spm` }] : []),
               ].map(({ label, value }) => (
                 <div>
                   <p class="font-sans text-xs uppercase tracking-wide mb-0.5" style="color: var(--color-muted);">{label}</p>
@@ -122,3 +168,52 @@ const runs = activities.filter((a) => ['Run', 'TrailRun', 'VirtualRun'].includes
     </div>
   </div>
 </Base>
+
+<script>
+  import L from 'leaflet';
+
+  // Fix Leaflet's default icon paths when bundled with Vite
+  delete (L.Icon.Default.prototype as any)._getIconUrl;
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  });
+
+  const isDark = document.documentElement.classList.contains('dark');
+
+  // Lazy-init each map as it scrolls into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target as HTMLElement;
+      observer.unobserve(el);
+
+      const coords: [number, number][] = JSON.parse(el.dataset.coords!);
+      if (coords.length === 0) return;
+
+      const map = L.map(el, { zoomControl: false, dragging: false, scrollWheelZoom: false });
+
+      // Use a muted tile style that works in both light and dark mode
+      L.tileLayer(
+        isDark
+          ? 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png'
+          : 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
+        {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+          subdomains: 'abcd',
+          maxZoom: 19,
+        }
+      ).addTo(map);
+
+      const route = L.polyline(coords, { color: '#FC4C02', weight: 3 }).addTo(map);
+      map.fitBounds(route.getBounds(), { padding: [20, 20] });
+
+      // Mark start and end
+      L.circleMarker(coords[0], { radius: 5, color: '#FC4C02', fillColor: '#fff', fillOpacity: 1, weight: 2 }).addTo(map);
+      L.circleMarker(coords[coords.length - 1], { radius: 5, color: '#FC4C02', fillColor: '#FC4C02', fillOpacity: 1, weight: 2 }).addTo(map);
+    });
+  }, { rootMargin: '200px' });
+
+  document.querySelectorAll('.activity-map').forEach((el) => observer.observe(el));
+</script>

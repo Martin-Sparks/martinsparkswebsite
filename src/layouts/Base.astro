@@ -50,6 +50,8 @@ const siteTitle = title === 'Martin Sparks' ? title : `${title} — Martin Spark
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <slot name="head" />
+
     <!-- Dark mode: apply before paint to avoid flash -->
     <script is:inline>
       (function () {
