@@ -5,7 +5,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://martinsparks.dev',
+  site: 'https://martinsparks.com',
   vite: {
     plugins: [tailwindcss()],
   },
