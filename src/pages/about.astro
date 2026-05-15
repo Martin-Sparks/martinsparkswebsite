@@ -7,16 +7,31 @@ import Base from '../layouts/Base.astro';
   description="Martin Sparks is a software engineering manager based in Scotland, with a background in full-stack engineering and a habit of running long distances."
 >
 
-  <!-- Header — dark -->
-  <section style="background-color: var(--color-bg-dark);">
-    <div class="max-w-5xl mx-auto px-6 py-20">
-      <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">About me</p>
-      <h1 class="text-4xl sm:text-5xl font-extrabold mb-6 max-w-2xl leading-tight" style="color: var(--color-text-on-dark);">
-        Engineering manager.<br />Runner. Guitarist.
-      </h1>
-      <p class="text-base leading-relaxed max-w-xl" style="color: var(--color-muted-on-dark);">
-        Based in Scotland. Working in software for over a decade.
-      </p>
+  <!-- Header — split layout -->
+  <section style="background-color: var(--color-bg-dark); overflow: hidden;">
+    <div class="flex flex-col sm:flex-row" style="min-height: 70vh;">
+
+      <!-- Text side -->
+      <div class="flex-1 flex flex-col justify-end px-6 sm:px-12 py-16 sm:py-20 max-w-2xl">
+        <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">About me</p>
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-6 leading-tight" style="color: var(--color-text-on-dark);">
+          Engineering manager.<br />Runner. Guitarist.
+        </h1>
+        <p class="text-base leading-relaxed" style="color: var(--color-muted-on-dark);">
+          Based in Scotland. Working in software for over a decade.
+        </p>
+      </div>
+
+      <!-- Photo side -->
+      <div
+        class="sm:w-2/5 shrink-0"
+        style="
+          min-height: 360px;
+          background-image: url('/images/about.jpg');
+          background-size: cover;
+          background-position: center top;
+        "
+      />
     </div>
   </section>
 
