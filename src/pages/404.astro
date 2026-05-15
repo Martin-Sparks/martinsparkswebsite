@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 — Page Not Found" description="This page doesn't exist.">
+
+  <section style="
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg-dark);
+  ">
+    <div class="max-w-5xl mx-auto px-6 py-24 w-full">
+      <p class="eyebrow mb-6" style="color: var(--color-accent);">404</p>
+      <h1 class="text-4xl sm:text-5xl font-extrabold mb-6 leading-tight" style="color: var(--color-text-on-dark);">
+        Nothing here.
+      </h1>
+      <p class="text-base max-w-md mb-10" style="color: var(--color-muted-on-dark);">
+        The page you're looking for doesn't exist — it may have moved, or the link might be wrong.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="/" class="btn-primary-on-dark">Back to home</a>
+        <a href="/blog" class="btn-ghost-on-dark">Read the blog</a>
+      </div>
+    </div>
+  </section>
+
+</Base>

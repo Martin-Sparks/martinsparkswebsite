@@ -1,0 +1,54 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2A2418"/>
+      <stop offset="100%" stop-color="#1A1710"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle warm vignette -->
+  <radialGradient id="vig" cx="50%" cy="50%" r="70%">
+    <stop offset="0%" stop-color="#9B7B3A" stop-opacity="0.06"/>
+    <stop offset="100%" stop-color="#1A1710" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#vig)"/>
+
+  <!-- Accent bar -->
+  <rect x="80" y="248" width="56" height="3" fill="#9B7B3A" rx="2"/>
+
+  <!-- Name -->
+  <text
+    x="80" y="340"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="88"
+    font-weight="700"
+    letter-spacing="18"
+    fill="#EEE8D5"
+    filter="url(#glow)"
+  >MARTIN SPARKS</text>
+
+  <!-- Subtitle -->
+  <text
+    x="83" y="400"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="22"
+    letter-spacing="6"
+    fill="#A09585"
+  >ENGINEERING MANAGER · RUNNER · BUILDER</text>
+
+  <!-- URL -->
+  <text
+    x="83" y="540"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="18"
+    letter-spacing="3"
+    fill="#6A6050"
+  >martinsparks.com</text>
+</svg>

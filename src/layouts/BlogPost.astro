@@ -18,6 +18,10 @@ const { text: readTime } = readingTime(post.body ?? '');
 ---
 
 <Base title={title} description={description}>
+  <div
+    id="reading-progress"
+    style="position: fixed; top: 0; left: 0; height: 2px; width: 0%; background-color: var(--color-accent); z-index: 9999; transition: width 0.1s linear; pointer-events: none;"
+  />
 
   <!-- Post header — dark -->
   <section style="background-color: var(--color-bg-dark);">
@@ -61,4 +65,14 @@ const { text: readTime } = readingTime(post.body ?? '');
     </footer>
   </article>
 
+
 </Base>
+
+<script>
+  const bar = document.getElementById('reading-progress');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar && total > 0) bar.style.width = `${(scrolled / total) * 100}%`;
+  }, { passive: true });
+</script>
