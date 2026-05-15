@@ -172,4 +172,23 @@ import Base from '../layouts/Base.astro';
     </div>
   </section>
 
+
 </Base>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const success = document.getElementById('form-success');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data as any).toString(),
+    });
+    form.reset();
+    form.style.display = 'none';
+    if (success) success.classList.remove('hidden');
+  });
+</script>
