@@ -7,31 +7,37 @@ import Base from '../layouts/Base.astro';
   description="Software Engineering Manager based in Edinburgh with around 20 years in tech, leading engineering teams at Insights."
 >
 
-  <!-- Header — split layout -->
-  <section style="background-color: var(--color-bg-dark); overflow: hidden;">
-    <div class="flex flex-col sm:flex-row" style="min-height: 70vh;">
-
-      <!-- Text side -->
-      <div class="flex-1 flex flex-col justify-end px-6 sm:px-12 py-16 sm:py-20 max-w-2xl">
-        <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">About me</p>
-        <h1 class="text-4xl sm:text-5xl font-extrabold mb-6 leading-tight" style="color: var(--color-text-on-dark);">
-          Engineering manager.<br />Based in Edinburgh.
-        </h1>
-        <p class="text-base leading-relaxed" style="color: var(--color-muted-on-dark);">
-          Around 20 years in tech. Currently leading engineering at Insights.
-        </p>
-      </div>
-
-      <!-- Photo side -->
-      <div
-        class="sm:w-2/5 shrink-0"
-        style="
-          min-height: 360px;
-          background-image: url('/images/about.jpg');
-          background-size: cover;
-          background-position: center top;
-        "
-      />
+  <!-- Full-bleed hero -->
+  <section style="
+    position: relative;
+    min-height: 85vh;
+    display: flex;
+    align-items: flex-end;
+    background-image: url('/images/about-hero.jpg');
+    background-size: cover;
+    background-position: center 30%;
+    overflow: hidden;
+  ">
+    <!-- Stronger overlay needed — image is bright throughout -->
+    <div style="
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 14, 10, 0.35) 0%,
+        rgba(15, 14, 10, 0.45) 45%,
+        rgba(15, 14, 10, 0.88) 75%,
+        rgba(15, 14, 10, 0.97) 100%
+      );
+    " />
+    <div class="relative max-w-5xl mx-auto px-6 pb-20 pt-48 w-full">
+      <p class="eyebrow mb-4" style="color: rgba(238,232,213,0.7);">About me</p>
+      <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 leading-tight" style="color: var(--color-text-on-dark);">
+        Engineering manager.<br />Based in Edinburgh.
+      </h1>
+      <p class="text-base leading-relaxed max-w-lg" style="color: var(--color-muted-on-dark);">
+        Around 20 years in tech. Currently leading engineering at Insights.
+      </p>
     </div>
   </section>
 
