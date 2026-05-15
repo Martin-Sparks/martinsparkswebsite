@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 
 <Base
   title="About"
-  description="Martin Sparks is a software engineering manager based in Scotland, with a background in full-stack engineering and a habit of running long distances."
+  description="Software Engineering Manager based in Edinburgh with around 20 years in tech, leading engineering teams at Insights."
 >
 
   <!-- Header — split layout -->
@@ -15,10 +15,10 @@ import Base from '../layouts/Base.astro';
       <div class="flex-1 flex flex-col justify-end px-6 sm:px-12 py-16 sm:py-20 max-w-2xl">
         <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">About me</p>
         <h1 class="text-4xl sm:text-5xl font-extrabold mb-6 leading-tight" style="color: var(--color-text-on-dark);">
-          Engineering manager.<br />Runner. Guitarist.
+          Engineering manager.<br />Based in Edinburgh.
         </h1>
         <p class="text-base leading-relaxed" style="color: var(--color-muted-on-dark);">
-          Based in Scotland. Working in software for over a decade.
+          Around 20 years in tech. Currently leading engineering at Insights.
         </p>
       </div>
 
@@ -41,70 +41,51 @@ import Base from '../layouts/Base.astro';
       <p class="eyebrow mb-3">Background</p>
       <div class="prose">
         <p>
-          Hi — I'm Martin. I'm a software engineering manager at
+          I'm a Software Engineering Manager based in Edinburgh with around 20 years in tech,
+          currently leading a squad of engineers at
           <a href="https://www.insights.com" target="_blank" rel="noopener noreferrer">Insights</a>,
-          where I lead a multi-disciplinary team of engineers, QA, and design. My background is in
-          full-stack engineering — React, TypeScript, Node.js, PostgreSQL — and I try to keep
-          enough technical depth to be genuinely useful to the people I work with.
+          a SaaS analytics company.
         </p>
         <p>
-          The path here wasn't entirely linear. I came to software through
-          <a href="https://codeclan.com" target="_blank" rel="noopener noreferrer">CodeClan</a>,
-          an intensive 16-week bootcamp in Edinburgh, after a stint in technical delivery management
-          for the Scottish Government — specifically delivering a £1 million telephony platform into
-          Registers of Scotland. Managing suppliers, stakeholders, and the particular chaos of making
-          technology work inside a public body turned out to be good preparation for engineering leadership.
+          My career has taken me from delivering a £1 million telephony platform for the Scottish
+          Government to building and growing engineering teams from the ground up. I care a lot about
+          the people side of this job: structured onboarding, genuine coaching, creating the kind of
+          team culture where engineers actually want to do their best work.
         </p>
         <p>
-          At Insights I lead a team of ten and own the technical roadmap. The past year has meant a
-          large-scale migration off a legacy platform, establishing a community of practice, and building
-          the kind of agile culture where people actually want to show up to retrospectives.
+          I came into management through the code, so I still speak the language. My background is
+          in TypeScript, React, and Node.js, and I've spent enough time in the weeds to know when to
+          get hands-on and when to get out of the way.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Outside work — subtle bg -->
+  <!-- Engineering culture — subtle bg -->
   <section style="background-color: var(--color-bg-subtle);">
     <div class="max-w-5xl mx-auto px-6 py-16">
-      <p class="eyebrow mb-8">Outside of work</p>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {[
-          {
-            title: 'Running',
-            body: 'I run regularly and have done for years — long distances, early mornings, often in the dark. It\'s the best way I\'ve found to stay fit and clear my head in equal measure.',
-          },
-          {
-            title: 'Guitar',
-            body: 'I\'ve played guitar for over 20 years. Not professionally, not particularly ambitiously — just for the pleasure of it. One of those things that never gets old.',
-          },
-          {
-            title: 'Snowboarding',
-            body: 'When there\'s snow, I snowboard. When there isn\'t, I look at weather forecasts and wait.',
-          },
-        ].map(({ title, body }) => (
-          <div
-            class="rounded-2xl p-6"
-            style="background-color: var(--color-bg); border: 1px solid var(--color-border);"
-          >
-            <p class="font-bold text-base mb-3" style="color: var(--color-text);">{title}</p>
-            <p class="text-sm leading-relaxed" style="color: var(--color-muted);">{body}</p>
-          </div>
-        ))}
+      <div class="max-w-2xl">
+        <p class="eyebrow mb-3">How I think about the work</p>
+        <div class="prose">
+          <p>
+            Outside of the day job, I'm interested in how engineering organisations learn and improve.
+            I've set up communities of practice, run training programmes, and spent more time than I
+            care to admit thinking about how to run a good retrospective.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Side project -->
+  <!-- Outside work -->
   <section class="max-w-5xl mx-auto px-6 py-16">
     <div class="max-w-2xl">
-      <p class="eyebrow mb-3">Current side project</p>
+      <p class="eyebrow mb-3">Outside of work</p>
       <div class="prose">
         <p>
-          I'm building a jigsaw puzzle game — Phaser 3, TypeScript, targeting iOS and Android via
-          Capacitor. It's a more interesting technical problem than it sounds: smooth drag physics,
-          magnetic snap, piece grouping, and getting 60fps on a five-year-old phone. I'll be writing
-          about it here as it takes shape.
+          When I'm not doing any of that, you'll find me on a snowboard whenever the opportunity
+          arises, working my way through guitar (just over two years in and still going), or being
+          looked after by my two cats, who have very strong opinions about my work-from-home schedule.
         </p>
       </div>
     </div>
