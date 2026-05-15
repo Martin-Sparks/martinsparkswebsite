@@ -9,7 +9,7 @@ There's a certain irony in a software engineer procrastinating on building their
 
 ## A bit about me
 
-I'm Martin — a developer based in the UK. I spend most of my days writing code, running long distances, and thinking about why the first cup of coffee tastes better than the second. I've been building software professionally for over a decade, mostly backend systems, but I've dabbled in everything from embedded hardware to mobile apps.
+I'm Martin — an engineering manager based in Edinburgh. These days I spend most of my time leading teams, making technical decisions, and thinking about how to create environments where engineers do their best work. I still speak the language — my background is in TypeScript, React, and Node.js — but I've moved from writing the code to shaping the conditions around it. That, and running long distances, and thinking about why the first cup of coffee tastes better than the second.
 
 ## Why now?
 

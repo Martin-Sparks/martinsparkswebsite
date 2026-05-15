@@ -1,10 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import readingTime from 'reading-time';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const rendered = await Promise.all(
+  posts.map(async (post) => {
+    const { Content } = await render(post);
+    const { text: readTime } = readingTime(post.body ?? '');
+    return { post, Content, readTime };
+  })
+);
 
 const formatDate = (d: Date) =>
   new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
@@ -59,13 +67,13 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 
     <!-- Post list -->
     <div class="space-y-5">
-      {posts.map((post) => {
-        const { text: readTime } = readingTime(post.body ?? '');
-        return (
-          <article
-            class="group rounded-2xl p-6 transition-all hover:shadow-md"
-            style="background-color: var(--color-bg-subtle); border: 1px solid var(--color-border);"
-          >
+      {rendered.map(({ post, Content, readTime }, i) => (
+        <article
+          class="rounded-2xl transition-all"
+          style="background-color: var(--color-bg-subtle); border: 1px solid var(--color-border);"
+        >
+          <!-- Card header -->
+          <div class="p-6">
             <div class="sm:flex sm:items-start sm:justify-between gap-6">
               <div class="flex-1 min-w-0">
                 <div class="flex flex-wrap gap-1.5 mb-3">
@@ -94,9 +102,75 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
                 <span class="text-xs font-medium whitespace-nowrap" style="color: var(--color-muted);">{readTime}</span>
               </div>
             </div>
-          </article>
-        );
-      })}
+
+            <!-- Expand toggle -->
+            <button
+              class="expand-btn mt-5 flex items-center gap-2 text-xs font-semibold transition-colors"
+              style="color: var(--color-accent); background: none; border: none; padding: 0; cursor: pointer;"
+              data-index={i}
+              aria-expanded="false"
+            >
+              <span class="expand-label">Read inline</span>
+              <svg
+                class="expand-chevron"
+                width="14" height="14" viewBox="0 0 14 14" fill="none"
+                style="transition: transform 0.3s ease; flex-shrink: 0;"
+              >
+                <path d="M2.5 5L7 9.5L11.5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Expandable content -->
+          <div
+            class="expand-content"
+            data-index={i}
+            style="max-height: 0; overflow: hidden; transition: max-height 0.45s ease;"
+          >
+            <div
+              class="prose px-6 pb-8"
+              style="border-top: 1px solid var(--color-border); padding-top: 1.75rem;"
+            >
+              <Content />
+            </div>
+            <div class="px-6 pb-6 flex gap-4 items-center" style="border-top: 1px solid var(--color-border);">
+              <a
+                href={`/blog/${post.id}`}
+                class="text-xs font-semibold no-underline hover:underline"
+                style="color: var(--color-accent);"
+              >
+                Open full post &rarr;
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
     </div>
   </div>
 </Base>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.expand-btn').forEach((btn) => {
+    const idx = btn.dataset.index;
+    const content = document.querySelector<HTMLElement>(`.expand-content[data-index="${idx}"]`);
+    const label = btn.querySelector<HTMLElement>('.expand-label');
+    const chevron = btn.querySelector<SVGElement>('.expand-chevron');
+    if (!content) return;
+
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      if (isOpen) {
+        content.style.maxHeight = '0';
+        btn.setAttribute('aria-expanded', 'false');
+        if (label) label.textContent = 'Read inline';
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+      } else {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+        if (label) label.textContent = 'Collapse';
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      }
+    });
+  });
+</script>
