@@ -80,10 +80,29 @@ const runs = activities
 >
   <link slot="head" rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
-  <!-- Dark hero -->
-  <section style="background-color: var(--color-bg-dark);">
-    <div class="max-w-6xl mx-auto px-6 py-20">
-      <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">Running</p>
+  <!-- Photo hero -->
+  <section style="
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    align-items: flex-end;
+    background-image: url('/images/runs.jpg');
+    background-size: cover;
+    background-position: center 20%;
+    overflow: hidden;
+  ">
+    <div style="
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 14, 10, 0.2) 0%,
+        rgba(15, 14, 10, 0.45) 50%,
+        rgba(15, 14, 10, 0.92) 100%
+      );
+    " />
+    <div class="relative max-w-6xl mx-auto px-6 pb-16 pt-32 w-full">
+      <p class="eyebrow mb-4" style="color: rgba(238,232,213,0.7);">Running</p>
       <h1 class="text-4xl sm:text-5xl font-extrabold mb-4" style="color: var(--color-text-on-dark);">Run Routes</h1>
       <p class="text-base max-w-lg" style="color: var(--color-muted-on-dark);">
         Latest {runs.length} runs pulled live from Strava. Route maps, pace, heart rate, and cadence. Updated every build.
