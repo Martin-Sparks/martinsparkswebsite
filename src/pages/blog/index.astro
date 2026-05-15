@@ -16,10 +16,29 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
   title="Blog"
   description="Writing on software engineering, running, and building things in public."
 >
-  <!-- Header -->
-  <section style="background-color: var(--color-bg-dark);">
-    <div class="max-w-5xl mx-auto px-6 py-20">
-      <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">Writing</p>
+  <!-- Photo hero -->
+  <section style="
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    align-items: flex-end;
+    background-image: url('/images/blog-hero.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    overflow: hidden;
+  ">
+    <div style="
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 14, 10, 0.3) 0%,
+        rgba(15, 14, 10, 0.5) 50%,
+        rgba(15, 14, 10, 0.93) 100%
+      );
+    " />
+    <div class="relative max-w-5xl mx-auto px-6 pb-16 pt-40 w-full">
+      <p class="eyebrow mb-4" style="color: rgba(238,232,213,0.7);">Writing</p>
       <h1 class="text-4xl sm:text-5xl font-extrabold mb-4" style="color: var(--color-text-on-dark);">Blog</h1>
       <p class="text-base max-w-lg" style="color: var(--color-muted-on-dark);">
         On software engineering, running, and building things. {posts.length} posts so far.
