@@ -3,6 +3,7 @@ const navLinks = [
   { href: '/blog', label: 'Blog' },
   { href: '/runs', label: 'Run Routes' },
   { href: '/about', label: 'About' },
+  ...(import.meta.env.SHOW_NOW_PAGE === 'true' ? [{ href: '/now', label: 'Now' }] : []),
 ];
 
 const { pathname } = Astro.url;
