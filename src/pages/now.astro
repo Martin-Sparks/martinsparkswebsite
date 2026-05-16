@@ -1,81 +1,81 @@
 ---
 import Base from '../layouts/Base.astro';
 
-if (import.meta.env.SHOW_NOW_PAGE !== 'true') {
-  return Astro.redirect('/');
-}
-
+const enabled = import.meta.env.SHOW_NOW_PAGE === 'true';
 const updated = 'May 2026';
 ---
 
-<Base
-  title="Now"
-  description="What Martin Sparks is working on, running, reading, and playing right now."
->
+{enabled ? (
+  <Base
+    title="Now"
+    description="What Martin Sparks is working on, running, reading, and playing right now."
+  >
+    <!-- Hero -->
+    <section style="background-color: var(--color-bg-dark);">
+      <div class="max-w-5xl mx-auto px-6 py-20">
+        <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">Now</p>
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 leading-tight" style="color: var(--color-text-on-dark);">
+          What I'm up to.
+        </h1>
+        <p class="text-base max-w-lg" style="color: var(--color-muted-on-dark);">
+          A snapshot of what's on my plate right now. Last updated {updated}.
+          Inspired by <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent);">the Now page movement</a>.
+        </p>
+      </div>
+    </section>
 
-  <!-- Hero -->
-  <section style="background-color: var(--color-bg-dark);">
-    <div class="max-w-5xl mx-auto px-6 py-20">
-      <p class="eyebrow mb-4" style="color: var(--color-muted-on-dark);">Now</p>
-      <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 leading-tight" style="color: var(--color-text-on-dark);">
-        What I'm up to.
-      </h1>
-      <p class="text-base max-w-lg" style="color: var(--color-muted-on-dark);">
-        A snapshot of what's on my plate right now. Last updated {updated}.
-        Inspired by <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent);">the Now page movement</a>.
-      </p>
+    <!-- Content -->
+    <div class="max-w-5xl mx-auto px-6 py-16">
+
+      <section class="max-w-2xl pb-12">
+        <p class="eyebrow mb-4">Working on</p>
+        <div class="prose">
+          <ul>
+            <li>Designing and rolling out a new incident management process at Insights — getting the team to a place where we respond to production issues consistently and without drama</li>
+            <li>Building out a key new feature that I can't say too much about yet</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="max-w-2xl py-12" style="border-top: 1px solid var(--color-border);">
+        <p class="eyebrow mb-4">Running</p>
+        <div class="prose">
+          <ul>
+            <li>Training for the <strong>Scottish Half Marathon</strong> — building up the long runs and trying not to find excuses to skip the midweek sessions</li>
+            <li>Heading to <strong>Bilbao and San Sebastián</strong> in September, which is motivation enough to keep the miles up</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="max-w-2xl py-12" style="border-top: 1px solid var(--color-border);">
+        <p class="eyebrow mb-4">Reading</p>
+        <div class="prose">
+          <ul>
+            <li><strong>The Name of the Wind</strong> by Patrick Rothfuss — finally getting around to it, and it's as good as everyone says</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="max-w-2xl py-12" style="border-top: 1px solid var(--color-border);">
+        <p class="eyebrow mb-4">Playing</p>
+        <div class="prose">
+          <p>Four songs on the go on guitar at the moment:</p>
+          <ul>
+            <li><strong>Live Forever</strong> — Oasis</li>
+            <li><strong>When the Sun Goes Down</strong> — Arctic Monkeys</li>
+            <li><strong>The Circle</strong> — Ocean Colour Scene</li>
+            <li><strong>Don't Look Back in Anger</strong> — Oasis (acoustic, slow version)</li>
+          </ul>
+        </div>
+      </section>
+
     </div>
-  </section>
-
-  <!-- Content -->
-  <div class="max-w-5xl mx-auto px-6 py-16 space-y-0">
-
-    <!-- Working on -->
-    <section class="max-w-2xl pb-12">
-      <p class="eyebrow mb-4">Working on</p>
-      <div class="prose">
-        <ul>
-          <li>Designing and rolling out a new incident management process at Insights — getting the team to a place where we respond to production issues consistently and without drama</li>
-          <li>Building out a key new feature that I can't say too much about yet</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Running -->
-    <section class="max-w-2xl py-12" style="border-top: 1px solid var(--color-border);">
-      <p class="eyebrow mb-4">Running</p>
-      <div class="prose">
-        <ul>
-          <li>Training for the <strong>Scottish Half Marathon</strong> — building up the long runs and trying not to find excuses to skip the midweek sessions</li>
-          <li>Heading to <strong>Bilbao and San Sebastián</strong> in September, which is motivation enough to keep the miles up</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Reading -->
-    <section class="max-w-2xl py-12" style="border-top: 1px solid var(--color-border);">
-      <p class="eyebrow mb-4">Reading</p>
-      <div class="prose">
-        <ul>
-          <li><strong>The Name of the Wind</strong> by Patrick Rothfuss — finally getting around to it, and it's as good as everyone says</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Playing -->
-    <section class="max-w-2xl py-12" style="border-top: 1px solid var(--color-border);">
-      <p class="eyebrow mb-4">Playing</p>
-      <div class="prose">
-        <p>Four songs on the go on guitar at the moment:</p>
-        <ul>
-          <li><strong>Live Forever</strong> — Oasis</li>
-          <li><strong>When the Sun Goes Down</strong> — Arctic Monkeys</li>
-          <li><strong>The Circle</strong> — Ocean Colour Scene</li>
-          <li><strong>Don't Look Back in Anger</strong> — Oasis (acoustic, slow version)</li>
-        </ul>
-      </div>
-    </section>
-
-  </div>
-
-</Base>
+  </Base>
+) : (
+  <html lang="en">
+    <head>
+      <meta http-equiv="refresh" content="0;url=/" />
+    </head>
+    <body></body>
+  </html>
+)}
